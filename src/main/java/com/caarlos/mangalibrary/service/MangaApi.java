@@ -1,7 +1,6 @@
 package com.caarlos.mangalibrary.service;
 
 import com.caarlos.mangalibrary.model.Manga;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -11,20 +10,20 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MangaApi {
 
     private static final String BASE_URL = "https://api.jikan.moe/v4";
-    private HttpClient httpClient;
-    private Gson gson;
+    private final HttpClient httpClient;
+
     
     public MangaApi() {
         this.httpClient = HttpClient.newHttpClient();
-        this.gson = new Gson();
     }
     
-    public void searchManga(String query) throws Exception{
-        String url = BASE_URL + "?q=" + query;
+    public List<Manga> searchManga(String query) throws Exception{
+        String url = BASE_URL + "/manga?q=" + query;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -39,14 +38,52 @@ public class MangaApi {
         JsonObject json = JsonParser.parseString(responseBody).getAsJsonObject();
         JsonArray dataArray = json.getAsJsonArray("data");
         
-        ArrayList<Object> mangas = new ArrayList<>();
+        List<Manga> mangas = new ArrayList<>();
         
         for (int i = 0; i < dataArray.size(); i++) {
             JsonObject mangaJson = dataArray.get(i).getAsJsonObject();
             
             Manga manga = new Manga();
+            manga.setMalId(mangaJson.get("mal_id").getAsInt());
+            manga.setTitle(mangaJson.get("title").getAsString());
 
+            List<String> authors = new ArrayList<>();
+            JsonArray authorsArray = mangaJson.getAsJsonArray("authors");
+            if(authorsArray != null){
+                authorsArray.forEach(author -> authors.add(author.getAsJsonObject().get("name").getAsString()));
+            }
+            manga.setAuthors(authors);
+
+            List<String> genres = new ArrayList<>();
+            JsonArray genresArray = mangaJson.getAsJsonArray("genres");
+            if(genresArray != null){
+                genresArray.forEach(genre -> genres.add(genre.getAsJsonObject().get("name").getAsString()));
+            }
+            manga.setGenres(genres);
+
+            if(mangaJson.has("synopsis") && !mangaJson.get("synopsis").isJsonNull()) {
+                manga.setSynopsis(mangaJson.get("synopsis").getAsString());
+            }
+
+            if(mangaJson.has("score") && !mangaJson.get("score").isJsonNull()) {
+                manga.setScore(mangaJson.get("score").getAsDouble());
+            }
+
+            if (mangaJson.has("published") && !mangaJson.get("published").isJsonNull()) {
+                JsonObject published = mangaJson.getAsJsonObject("published");
+                if (published.has("prop") && !published.get("prop").isJsonNull()) {
+                    JsonObject prop = published.getAsJsonObject("prop");
+                    if (prop.has("from") && !prop.get("from").isJsonNull()) {
+                        JsonObject from = prop.getAsJsonObject("from");
+                        if (from.has("year") && !from.get("year").isJsonNull()) {
+                            manga.setPublishedYear(from.get("year").getAsInt());
+                        }
+                    }
+                }
+            }
+            mangas.add(manga);
         }
-        
+        return mangas;
     }
+
 }

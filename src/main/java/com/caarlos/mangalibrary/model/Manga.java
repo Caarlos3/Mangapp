@@ -9,19 +9,19 @@ public class Manga {
     private List<String> genres;
     private String synopsis;
     private Integer publishedYear;
-    private Double rating;
+    private Double score;
     private MangaStatus status;
 
     public Manga(){
     }
-    public Manga(int malId, String title, List<String> authors, List<String> genres, String synopsis, Integer publishedYear, Double rating, MangaStatus status) {
+    public Manga(int malId, String title, List<String> authors, List<String> genres, String synopsis, Integer publishedYear, Double score, MangaStatus status) {
         this.malId = malId;
         this.title = title;
         this.authors = authors;
         this.genres = genres;
         this.synopsis = synopsis;
         this.publishedYear = publishedYear;
-        this.rating = rating;
+        this.score = score;
         this.status = status;
     }
 
@@ -69,12 +69,12 @@ public class Manga {
         this.publishedYear = publishedYear;
     }
 
-    public Double getRating() {
-        return rating;
+    public Double getScore() {
+        return score;
     }
 
-    public void setRating(Double rating) {
-        this.rating = rating;
+    public void setScore(Double score) {
+        this.score = score;
     }
 
     public MangaStatus getStatus() {
@@ -92,7 +92,7 @@ public class Manga {
                 ", title='" + title + '\'' +
                 ", authors=" + authors +
                 ", genres=" + genres +
-                ", rating =" + rating +
+                ", score =" + score +
                 ", status=" + status +
                 '}';
     }

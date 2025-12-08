@@ -4,6 +4,7 @@ import com.caarlos.mangalibrary.model.Manga;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
@@ -12,17 +13,17 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class MangaApi {
 
     private static final String BASE_URL = "https://api.jikan.moe/v4";
     private final HttpClient httpClient;
 
-    
     public MangaApi() {
         this.httpClient = HttpClient.newHttpClient();
     }
-    
-    public List<Manga> searchManga(String query) throws Exception{
+
+    public List<Manga> searchManga(String query) throws Exception {
         String url = BASE_URL + "/manga?q=" + query;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -33,39 +34,39 @@ public class MangaApi {
         if (response.statusCode() != 200) {
             throw new Exception("Failed : HTTP error code : " + response.statusCode());
         }
-        
+
         String responseBody = response.body();
         JsonObject json = JsonParser.parseString(responseBody).getAsJsonObject();
         JsonArray dataArray = json.getAsJsonArray("data");
-        
+
         List<Manga> mangas = new ArrayList<>();
-        
+
         for (int i = 0; i < dataArray.size(); i++) {
             JsonObject mangaJson = dataArray.get(i).getAsJsonObject();
-            
+
             Manga manga = new Manga();
             manga.setMalId(mangaJson.get("mal_id").getAsInt());
             manga.setTitle(mangaJson.get("title").getAsString());
 
             List<String> authors = new ArrayList<>();
             JsonArray authorsArray = mangaJson.getAsJsonArray("authors");
-            if(authorsArray != null){
+            if (authorsArray != null) {
                 authorsArray.forEach(author -> authors.add(author.getAsJsonObject().get("name").getAsString()));
             }
             manga.setAuthors(authors);
 
             List<String> genres = new ArrayList<>();
             JsonArray genresArray = mangaJson.getAsJsonArray("genres");
-            if(genresArray != null){
+            if (genresArray != null) {
                 genresArray.forEach(genre -> genres.add(genre.getAsJsonObject().get("name").getAsString()));
             }
             manga.setGenres(genres);
 
-            if(mangaJson.has("synopsis") && !mangaJson.get("synopsis").isJsonNull()) {
+            if (mangaJson.has("synopsis") && !mangaJson.get("synopsis").isJsonNull()) {
                 manga.setSynopsis(mangaJson.get("synopsis").getAsString());
             }
 
-            if(mangaJson.has("score") && !mangaJson.get("score").isJsonNull()) {
+            if (mangaJson.has("score") && !mangaJson.get("score").isJsonNull()) {
                 manga.setScore(mangaJson.get("score").getAsDouble());
             }
 
@@ -85,5 +86,4 @@ public class MangaApi {
         }
         return mangas;
     }
-
 }

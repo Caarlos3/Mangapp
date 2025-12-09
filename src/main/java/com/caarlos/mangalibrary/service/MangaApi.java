@@ -10,6 +10,8 @@ import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +26,8 @@ public class MangaApi {
     }
 
     public List<Manga> searchManga(String query) throws Exception {
-        String url = BASE_URL + "/manga?q=" + query;
+        String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
+        String url = BASE_URL + "/manga?q=" + encodedQuery;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()

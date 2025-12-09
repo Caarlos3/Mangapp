@@ -11,10 +11,11 @@ public class Manga {
     private Integer publishedYear;
     private Double score;
     private MangaStatus status;
+    private String imageUrl;
 
     public Manga(){
     }
-    public Manga(int malId, String title, List<String> authors, List<String> genres, String synopsis, Integer publishedYear, Double score, MangaStatus status) {
+    public Manga(int malId, String title, List<String> authors, List<String> genres, String synopsis, Integer publishedYear, Double score, MangaStatus status, String imageUrl) {
         this.malId = malId;
         this.title = title;
         this.authors = authors;
@@ -23,6 +24,16 @@ public class Manga {
         this.publishedYear = publishedYear;
         this.score = score;
         this.status = status;
+        this.imageUrl = imageUrl;
+
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public int getMalId() {

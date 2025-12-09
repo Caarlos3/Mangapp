@@ -48,6 +48,16 @@ public class MangaApi {
             manga.setMalId(mangaJson.get("mal_id").getAsInt());
             manga.setTitle(mangaJson.get("title").getAsString());
 
+            if (mangaJson.has("images") && !mangaJson.get("images").isJsonNull()) {
+                JsonObject images = mangaJson.getAsJsonObject("images");
+                if (images.has("jpg") && !images.get("jpg").isJsonNull()) {
+                    JsonObject jpg = images.getAsJsonObject("jpg");
+                    if (jpg.has("image_url") && !jpg.get("image_url").isJsonNull()) {
+                        manga.setImageUrl(jpg.get("image_url").getAsString());
+                    }
+                }
+            }
+
             List<String> authors = new ArrayList<>();
             JsonArray authorsArray = mangaJson.getAsJsonArray("authors");
             if (authorsArray != null) {

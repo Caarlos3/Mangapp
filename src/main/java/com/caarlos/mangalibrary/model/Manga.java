@@ -3,7 +3,7 @@ package com.caarlos.mangalibrary.model;
 import java.util.List;
 
 public class Manga {
-    private int malId;
+    private Long malId;
     private String title;
     private List<String> authors;
     private List<String> genres;
@@ -15,7 +15,7 @@ public class Manga {
 
     public Manga(){
     }
-    public Manga(int malId, String title, List<String> authors, List<String> genres, String synopsis, Integer publishedYear, Double score, MangaStatus status, String imageUrl) {
+    public Manga(Long malId, String title, List<String> authors, List<String> genres, String synopsis, Integer publishedYear, Double score, MangaStatus status, String imageUrl) {
         this.malId = malId;
         this.title = title;
         this.authors = authors;
@@ -36,10 +36,10 @@ public class Manga {
         this.imageUrl = imageUrl;
     }
 
-    public int getMalId() {
+    public Long getMalId() {
         return malId;
     }
-    public void setMalId(int malId) {
+    public void setMalId(Long malId) {
         this.malId = malId;
     }
 

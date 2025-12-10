@@ -48,7 +48,7 @@ public class MangaApi {
             JsonObject mangaJson = dataArray.get(i).getAsJsonObject();
 
             Manga manga = new Manga();
-            manga.setMalId(mangaJson.get("mal_id").getAsInt());
+            manga.setMalId(mangaJson.get("mal_id").getAsLong());
             manga.setTitle(mangaJson.get("title").getAsString());
 
             if (mangaJson.has("images") && !mangaJson.get("images").isJsonNull()) {

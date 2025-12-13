@@ -8,7 +8,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*")
 public class MangaController {
 
     private final MangaApi mangaApi;

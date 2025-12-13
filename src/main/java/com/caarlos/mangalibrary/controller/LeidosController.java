@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/leidos")
-@CrossOrigin(origins = "*")
 public class LeidosController {
 
     private final MangaLeidoRepository mangaLeidoRepository;

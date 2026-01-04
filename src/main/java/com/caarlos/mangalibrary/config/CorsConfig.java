@@ -19,6 +19,7 @@ public class CorsConfig {
         config.setAllowedOrigins(List.of(
                 "https://mangaapp-front.vercel.app",
                 "https://mangaapp-front-ej2cx7xi0-caarlos3s-projects.vercel.app",
+                "https://mangaapp-front-3wz0e3bf4-caarlos3s-projects.vercel.app",
                 "http://localhost:5173",
                 "http://localhost:4173"
         ));
